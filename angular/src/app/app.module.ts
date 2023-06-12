@@ -14,11 +14,17 @@ import {NzFormModule} from "ng-zorro-antd/form";
 import {AuthenModule} from "./Authen/authen.module";
 import {AuthenRoutingModule} from "./Authen/authen-routing.module";
 import {Router, RouterModule} from "@angular/router";
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import {httpInterceptorProviders} from "./interceptor";
+import {NZ_CONFIG, NzConfig} from "ng-zorro-antd/core/config";
 
 
 registerLocaleData(en);
 
-
+const ngZorroConfig: NzConfig = {
+  message: {nzTop : 100}
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,14 +38,17 @@ registerLocaleData(en);
     NzInputModule,
     NzFormModule,
     ReactiveFormsModule,
-    AuthenModule,
-    AuthenRoutingModule,
     RouterModule,
+    NzMessageModule,
+    NzTableModule
 
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US,deps:[Router] }
+    httpInterceptorProviders,
+    { provide: NZ_I18N, useValue: en_US },
+    { provide: NZ_CONFIG, useValue: ngZorroConfig }
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

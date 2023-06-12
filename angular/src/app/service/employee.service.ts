@@ -6,17 +6,26 @@ import {Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class StudentService {
+export class EmployeeService {
 
   constructor(private httpClient : HttpClient) { }
   apiUrl = environment.apiUrl
-  addEmployeeUrl = environment.apiUrl+"/add-employe"
+  addEmployeeUrl = environment.apiUrl+"/add-employee"
   getEmployeeUrl = environment.apiUrl+"/employee"
   getEmployeeListUrl = environment.apiUrl+"/employees"
+  getManagerListUrl = environment.apiUrl+"/managers"
   updateEmployeeUrl = environment.apiUrl+"/update-employee"
   deletedEmployeeUrl = environment.apiUrl+"/deleted-employee"
+
+
   addEmployee(object:any):Observable<any>{
     return this.httpClient.post(`${this.addEmployeeUrl}`,object)
+  }
+  getListEmployeeWithEmployee():Observable<any>{
+    return this.httpClient.get(`${this.getEmployeeListUrl}`)
+  }
+  getListEmployeeWithManager():Observable<any>{
+    return this.httpClient.get(`${this.getManagerListUrl}`)
   }
   getEmployee(id:number):Observable<any>{
     return  this.httpClient.get(`${this.getEmployeeUrl}/${id}`)

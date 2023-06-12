@@ -6,7 +6,7 @@ export class LocalStorageUlti{
     localStorage.setItem('access_token',accessToken)
   }
   static getAccessToken(){
-    localStorage.getItem('access_token')
+   return  localStorage.getItem('access_token')
   }
   static setRole(role:string){
     localStorage.setItem('role',role)

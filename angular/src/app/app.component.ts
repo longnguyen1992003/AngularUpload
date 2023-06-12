@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {LocalStorageUlti} from "./ulti/local-storage-ulti";
+import {Router, Routes} from "@angular/router";
 
 
 @Component({
@@ -12,6 +14,9 @@ export class AppComponent {
   onDeactivate($event: any) {
     window.scrollTo(0, 0)
   }
+constructor( private  router : Router) {
+}
+
 
 
 
