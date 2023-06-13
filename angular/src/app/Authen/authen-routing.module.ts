@@ -4,7 +4,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "../login/login.component";
 import {StudentComponent} from "./student/employees/student.component";
 import {ManagersComponent} from "./manager/managers/managers.component";
-import {AuthenticationGuard} from "../guard/authentication.guard";
+
 
 const routes : Routes=[
   {path:'login',component:LoginComponent },

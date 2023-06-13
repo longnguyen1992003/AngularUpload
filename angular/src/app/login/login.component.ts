@@ -5,6 +5,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 import {FormGroup,FormControl,Validators,FormBuilder} from "@angular/forms";
 import {Router} from "@angular/router";
 import {LocalStorageUlti} from "../ulti/local-storage-ulti";
+import {ShareDataService} from "../service/share-data.service";
 
 
 @Component({
@@ -15,21 +16,32 @@ import {LocalStorageUlti} from "../ulti/local-storage-ulti";
 export class LoginComponent implements OnInit {
 
   user: AccountResponse = new AccountResponse();
+  shareData !: AccountResponse
   loginForm !: FormGroup;
 
 
   constructor(private authenService: AuthenticationService,
               private messeage: NzMessageService,
-              private router: Router) {
+              private router: Router,
+              private shareDataService : ShareDataService
+              ) {
   }
 
 
   ngOnInit(): void {
+
+      this.shareDataService.sharedData$
+        .subscribe(sharedData => this.shareData = sharedData);
+      this.updateData()
+
     this.loginForm = new FormGroup({
       account: new FormControl('', [Validators.requiredTrue]),
       password: new FormControl('', [Validators.requiredTrue])
     })
 
+  }
+  updateData() {
+    this.shareDataService.setData(this.user);
   }
 
   login() {

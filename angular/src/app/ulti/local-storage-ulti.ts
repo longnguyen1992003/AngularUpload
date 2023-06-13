@@ -11,8 +11,8 @@ export class LocalStorageUlti{
   static setRole(role:string){
     localStorage.setItem('role',role)
   }
-  static getRole(){
-    localStorage.getItem('role')
+  static getRole() {
+    return localStorage.getItem('role');
   }
   static setAccount(account:string){
     localStorage.setItem('account',account)

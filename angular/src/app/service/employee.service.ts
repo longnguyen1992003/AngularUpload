@@ -16,8 +16,11 @@ export class EmployeeService {
   getManagerListUrl = environment.apiUrl+"/managers"
   updateEmployeeUrl = environment.apiUrl+"/update-employee"
   deletedEmployeeUrl = environment.apiUrl+"/deleted-employee"
+  searchEmployees = environment.apiUrl+"/search"
 
-
+  searchEmployee():Observable<any>{
+    return this.httpClient.get(`${this.searchEmployees}?param={{}}`)
+  }
   addEmployee(object:any):Observable<any>{
     return this.httpClient.post(`${this.addEmployeeUrl}`,object)
   }

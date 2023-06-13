@@ -12,16 +12,27 @@ import {Router} from "@angular/router";
 })
 export class StudentComponent implements  OnInit{
   employeeList !: AccountResponse[];
+  q:any;
   constructor(private studentService : EmployeeService,
               private router : Router
   ) {
   }
   ngOnInit(): void {
+
     this.listEmployee()
   }
   listEmployee(){
+    if(LocalStorageUlti.getRole()==='ROLE_EMPLOYEE'){
+        this.router.navigate(['/auth/employees'])
+    }
     this.studentService.getListEmployeeWithEmployee().subscribe(data =>
     this.employeeList=data)
+  }
+  searchManager(){
+    console.log("search")
+    this.studentService.searchEmployee().subscribe(data=>
+      this.employeeList=data
+    )
   }
   logout(){
     LocalStorageUlti.removeLoginInfor()

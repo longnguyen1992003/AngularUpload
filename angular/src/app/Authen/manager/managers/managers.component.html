@@ -1,4 +1,16 @@
-<div class="container">
+<form (ngSubmit)="searchManager()"  class="input-group">
+
+  <div class=" form-outline">
+    <input [(ngModel)]="q" type="search" id="form1" class="form-control" placeholder="Search" />
+
+    <button type="submit" class="btn btn-primary">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+
+</form>
+
+<div class="container-fluid text-right">
   <div class="text-center">
 
     <form (ngSubmit)="logout()"  method="post">
