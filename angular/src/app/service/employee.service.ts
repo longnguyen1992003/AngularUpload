@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
+import {LocalStorageUlti} from "../ulti/local-storage-ulti";
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,10 @@ export class EmployeeService {
   constructor(private httpClient : HttpClient) { }
   apiUrl = environment.apiUrl
   addEmployeeUrl = environment.apiUrl+"/add-employee"
-  getEmployeeUrl = environment.apiUrl+"/employee"
+  getEmployeeUrlByAccount = environment.apiUrl+"/employee/"+LocalStorageUlti.getAccount()
   getEmployeeListUrl = environment.apiUrl+"/employees"
   getManagerListUrl = environment.apiUrl+"/managers"
-  updateEmployeeUrl = environment.apiUrl+"/update-employee"
+  updateEmployeeUrl = environment.apiUrl+"/update-employee/"+LocalStorageUlti.getAccount()
   deletedEmployeeUrl = environment.apiUrl+"/deleted-employee"
   searchEmployees = environment.apiUrl+"/search"
 
@@ -30,16 +31,13 @@ export class EmployeeService {
   getListEmployeeWithManager():Observable<any>{
     return this.httpClient.get(`${this.getManagerListUrl}`)
   }
-  getEmployee(id:number):Observable<any>{
-    return  this.httpClient.get(`${this.getEmployeeUrl}/${id}`)
+  getEmployeeByAccount():Observable<any>{
+    return  this.httpClient.get(`${this.getEmployeeUrlByAccount}`)
   }
-  getEmployeeList():Observable<any>{
-    return  this.httpClient.get(`${this.getEmployeeUrl}`)
+  updateEmployee(object:any):Observable<any>{
+    return this.httpClient.put(`${this.updateEmployeeUrl}`,object)
   }
-  updateEmployee(id:number,object:any):Observable<any>{
-    return this.httpClient.put(`${this.updateEmployeeUrl}/${id}`,object)
-  }
-  deletedEmployee(id:number):Observable<any>{
-    return this.httpClient.delete(`${this.deletedEmployeeUrl}/${id}`)
+  deletedEmployee(account:string):Observable<any>{
+    return this.httpClient.delete(`${this.deletedEmployeeUrl}/${account}`)
   }
 }

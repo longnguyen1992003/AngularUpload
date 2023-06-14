@@ -1,24 +1,68 @@
+<div>
 <form (ngSubmit)="searchManager()"  class="input-group">
-
-  <div class=" form-outline">
-    <input [(ngModel)]="q" type="search" id="form1" class="form-control" placeholder="Search" />
+  <div class=" d-flex form-outline" >
+    <input [(ngModel)]="q" name="search" type="search" id="form1" class="form-control" placeholder="Search" />
 
     <button type="submit" class="btn btn-primary">
       <i class="fas fa-search"></i>
     </button>
   </div>
-
 </form>
+</div>
 
 <div class="container">
-  <div class="text-right">
-
+  <div class="text-right d-flex justify-content-end">
     <form (ngSubmit)="logout()"  method="post">
       <input  type="submit" class="btn btn-default btn-primary" data-dismiss="modal" value="Logout" />
     </form>
   </div>
 </div>
-
+<ul class="nav nav-tabs mb-3" id="myTab0" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link active"
+      id="home-tab0"
+      data-mdb-toggle="tab"
+      data-mdb-target="#home0"
+      type="button"
+      role="tab"
+      aria-controls="home"
+      aria-selected="true"
+      (click)="home()"
+    >
+      Home
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="profile-tab0"
+      data-mdb-toggle="tab"
+      data-mdb-target="#profile0"
+      type="button"
+      role="tab"
+      aria-controls="profile"
+      aria-selected="false"
+      (click)="profile()"
+    >
+      Profile
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="contact-tab0"
+      data-mdb-toggle="tab"
+      data-mdb-target="#contact0"
+      type="button"
+      role="tab"
+      aria-controls="contact"
+      aria-selected="false"
+    >
+      Contact
+    </button>
+  </li>
+</ul>
 <nz-table #basicTable [nzData]="employeeList">
   <thead>
   <tr>

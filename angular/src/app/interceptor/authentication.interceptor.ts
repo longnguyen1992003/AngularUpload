@@ -16,7 +16,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   constructor(private activeRouter: ActivatedRoute,) {
   }
 
-  API_IGNORE_ACCESS_TOKEN = ['/login'];
+  API_IGNORE_ACCESS_TOKEN = ['/login','/register'];
 
   token: any;
 

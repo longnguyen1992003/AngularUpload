@@ -18,7 +18,7 @@ export class LocalStorageUlti{
     localStorage.setItem('account',account)
   }
   static getAccount(){
-    localStorage.getItem('account')
+    return  localStorage.getItem('account')
   }
 
 }

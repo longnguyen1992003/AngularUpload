@@ -29,10 +29,14 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.shareDataService.sharedData$
+      .subscribe(sharedData => this.shareData = sharedData);
+    this.updateData()
 
-      this.shareDataService.sharedData$
-        .subscribe(sharedData => this.shareData = sharedData);
-      this.updateData()
+    if (LocalStorageUlti.getAccessToken()){
+      LocalStorageUlti.removeLoginInfor();
+    }
+
 
     this.loginForm = new FormGroup({
       account: new FormControl('', [Validators.requiredTrue]),
@@ -43,12 +47,11 @@ export class LoginComponent implements OnInit {
   updateData() {
     this.shareDataService.setData(this.user);
   }
-
+  backRegister(){
+    this.router.navigate(['/auth/register'])
+  }
   login() {
-    console.log(this.user);
-    if (LocalStorageUlti.getAccessToken()){
-      LocalStorageUlti.removeLoginInfor();
-    }
+
     this.authenService.login(this.user).subscribe({
       next: res => {
         if (res.accessToken){

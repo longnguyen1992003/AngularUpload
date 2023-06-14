@@ -18,6 +18,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import {httpInterceptorProviders} from "./interceptor";
 import {NZ_CONFIG, NzConfig} from "ng-zorro-antd/core/config";
+import { RegisterComponent } from './register/register.component';
 
 
 registerLocaleData(en);
@@ -28,6 +29,7 @@ const ngZorroConfig: NzConfig = {
 @NgModule({
   declarations: [
     AppComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

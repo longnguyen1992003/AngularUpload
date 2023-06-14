@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AccountResponse} from "../../InforRespone";
 import {AuthenticationService} from "../../../service/authentication.service";
 import {EmployeeService} from "../../../service/employee.service";
@@ -10,9 +10,10 @@ import {Router} from "@angular/router";
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css']
 })
-export class StudentComponent implements  OnInit{
+export class StudentComponent implements  OnInit,OnDestroy{
   employeeList !: AccountResponse[];
   q:any;
+  role=LocalStorageUlti.getRole();
   constructor(private studentService : EmployeeService,
               private router : Router
   ) {
@@ -20,6 +21,16 @@ export class StudentComponent implements  OnInit{
   ngOnInit(): void {
 
     this.listEmployee()
+  }
+  home(){
+    if (this.role=="ROLE_EMPLOYEE"){
+      this.router.navigate(['auth/employees'])}
+    if (this.role=="ROLE_MANAGER"){
+      this.router.navigate(['auth/managers'])
+    }
+  }
+  profile(){
+    this.router.navigate(['auth/employee-update'])
   }
   listEmployee(){
     if(LocalStorageUlti.getRole()==='ROLE_EMPLOYEE'){
@@ -38,6 +49,9 @@ export class StudentComponent implements  OnInit{
     LocalStorageUlti.removeLoginInfor()
     this.router.navigate(['/auth/login']);
 
+  }
+
+  ngOnDestroy(): void {
   }
 
 }
