@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {AccountResponse} from "../Authen/InforRespone";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShareDataService {
-  private sharedData: Subject<any> = new Subject<any>();
+  private sharedData = new BehaviorSubject<any>({})
   sharedData$: Observable<any> = this.sharedData.asObservable();
 
 

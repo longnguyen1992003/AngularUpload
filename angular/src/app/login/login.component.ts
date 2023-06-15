@@ -15,8 +15,9 @@ import {ShareDataService} from "../service/share-data.service";
 })
 export class LoginComponent implements OnInit {
 
-  user: AccountResponse = new AccountResponse();
-  shareData !: AccountResponse
+  user :AccountResponse=new AccountResponse()
+  stringdata  ="fccghhccc";
+  shareData !: string
   loginForm !: FormGroup;
 
 
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
 
   }
   updateData() {
-    this.shareDataService.setData(this.user);
+    this.shareDataService.setData(this.stringdata);
   }
   backRegister(){
     this.router.navigate(['/auth/register'])

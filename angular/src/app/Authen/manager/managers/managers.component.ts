@@ -13,8 +13,8 @@ import {NzMessageService} from "ng-zorro-antd/message";
 })
 export class ManagersComponent implements OnInit,OnDestroy{
   managerList !: AccountResponse[];
-  shareData !: AccountResponse
-  q:any;
+  shareData !: string;
+  q!:string;
   constructor(private studentService : EmployeeService,
               private router: Router,
               private shareDataService : ShareDataService,
@@ -25,7 +25,7 @@ export class ManagersComponent implements OnInit,OnDestroy{
   ngOnInit(): void {
     this.shareDataService.sharedData$
       .subscribe(sharedData => this.shareData = sharedData);
-    console.log(this.shareDataService)
+    console.log(this.shareDataService.sharedData$.subscribe())
   this.listManager()
   }
   home(){
@@ -35,6 +35,18 @@ export class ManagersComponent implements OnInit,OnDestroy{
       this.router.navigate(['auth/managers'])
     }
   }
+  search() {
+    console.log(this.q)
+    if (this.q) {
+      this.router.navigateByUrl('auth/managers?param=' + this.q);
+    }
+    this.listEmployeeBySearch()
+  }
+  listEmployeeBySearch(){
+    this.studentService.searchEmployee(this.q).subscribe(data =>
+      this.managerList=data)
+  }
+
   profile(){
     this.router.navigate(['auth/employee-update'])
   }
@@ -45,12 +57,7 @@ export class ManagersComponent implements OnInit,OnDestroy{
     this.studentService.getListEmployeeWithManager().subscribe(data =>
       this.managerList=data)
   }
-  searchManager(){
-    console.log("search")
-    this.studentService.searchEmployee().subscribe(data=>
-    this.managerList=data
-    )
-  }
+
   logout(){
     LocalStorageUlti.removeLoginInfor()
     this.router.navigate(['/auth/login']);

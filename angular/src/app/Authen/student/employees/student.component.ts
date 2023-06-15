@@ -40,8 +40,7 @@ export class StudentComponent implements  OnInit,OnDestroy{
     this.employeeList=data)
   }
   searchManager(){
-    console.log("search")
-    this.studentService.searchEmployee().subscribe(data=>
+    this.studentService.searchEmployee(this.q).subscribe(data=>
       this.employeeList=data
     )
   }
