@@ -2,9 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AccountResponse} from "../../InforRespone";
 import {EmployeeService} from "../../../service/employee.service";
 import {LocalStorageUlti} from "../../../ulti/local-storage-ulti";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ShareDataService} from "../../../service/share-data.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+// import * as path from "path";
 
 @Component({
   selector: 'app-managers',
@@ -18,9 +19,12 @@ export class ManagersComponent implements OnInit,OnDestroy{
   constructor(private studentService : EmployeeService,
               private router: Router,
               private shareDataService : ShareDataService,
-              private nzMessageService:NzMessageService
+              private nzMessageService:NzMessageService,
+              private activatedRoute:ActivatedRoute
   ) {}
   role=LocalStorageUlti.getRole();
+  size !: number;
+  page !: number;
 
   ngOnInit(): void {
     this.shareDataService.sharedData$
@@ -36,15 +40,20 @@ export class ManagersComponent implements OnInit,OnDestroy{
     }
   }
   search() {
-    console.log(this.q)
-    if (this.q) {
-      this.router.navigateByUrl('auth/managers?param=' + this.q);
+    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+    this.size =Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
+
+    if (this.size==0){
+      this.size=2
+    }else {
+      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
     }
-    this.listEmployeeBySearch()
-  }
-  listEmployeeBySearch(){
-    this.studentService.searchEmployee(this.q).subscribe(data =>
-      this.managerList=data)
+    if (this.q) {
+      this.router.navigateByUrl(`auth/managers?param=${this.q}&page=${this.page}&size=${this.size}` );
+    }
+
+    this.studentService.searchEmployee(this.q,this.page,this.size).subscribe(data =>
+      this.managerList=data.content)
   }
 
   profile(){
@@ -54,8 +63,16 @@ export class ManagersComponent implements OnInit,OnDestroy{
     if(LocalStorageUlti.getRole()==='ROLE_EMPLOYEE'){
       this.router.navigate(['/auth/employees'])
     }
-    this.studentService.getListEmployeeWithManager().subscribe(data =>
-      this.managerList=data)
+
+    this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+    this.page =Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
+    if (this.size==0){
+      this.size=2
+    }else {
+      this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+    }
+    this.studentService.getListEmployeeWithManager(this.page,this.size).subscribe(data =>
+      this.managerList=data.content)
   }
 
   logout(){

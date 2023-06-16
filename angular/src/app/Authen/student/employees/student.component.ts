@@ -3,7 +3,8 @@ import {AccountResponse} from "../../InforRespone";
 import {AuthenticationService} from "../../../service/authentication.service";
 import {EmployeeService} from "../../../service/employee.service";
 import {LocalStorageUlti} from "../../../ulti/local-storage-ulti";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Paging} from "../../Paging";
 
 @Component({
   selector: 'app-student',
@@ -11,11 +12,15 @@ import {Router} from "@angular/router";
   styleUrls: ['./student.component.css']
 })
 export class StudentComponent implements  OnInit,OnDestroy{
-  employeeList !: AccountResponse[];
+
+  paging:Paging = new Paging();
   q:any;
+  size !: number;
+  page !: number;
   role=LocalStorageUlti.getRole();
   constructor(private studentService : EmployeeService,
-              private router : Router
+              private router : Router,
+              private activatedRoute:ActivatedRoute
   ) {
   }
   ngOnInit(): void {
@@ -32,17 +37,56 @@ export class StudentComponent implements  OnInit,OnDestroy{
   profile(){
     this.router.navigate(['auth/employee-update'])
   }
-  listEmployee(){
-    if(LocalStorageUlti.getRole()==='ROLE_EMPLOYEE'){
-        this.router.navigate(['/auth/employees'])
+  listEmployee() {
+    if (LocalStorageUlti.getRole() === 'ROLE_EMPLOYEE') {
+      this.router.navigate(['/auth/employees'])
     }
-    this.studentService.getListEmployeeWithEmployee().subscribe(data =>
-    this.employeeList=data)
+    this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
+    if (this.page == 0) {
+      this.page = 2
+    } else {
+      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+    }
+
+    console.log(this.size)
+    console.log(this.page)
+    this.studentService.getListEmployeeWithEmployee(this.size, this.page).subscribe({
+      next: data => (
+
+        this.paging.content = data.content,
+          this.paging.totalPages=data.totalPages,
+          this.paging.totalElements=data.totalElements,
+          this.paging.currentPage=data.number,
+          console.log(this.paging.totalPages)
+
+      )
+    })
   }
-  searchManager(){
-    this.studentService.searchEmployee(this.q).subscribe(data=>
-      this.employeeList=data
+  searchEmployee(){
+    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+    this.size =Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
+
+    if (this.size==0){
+      this.size=2
+    }else {
+      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
+    }
+    if (this.q) {
+      this.router.navigateByUrl(`auth/employees?param=${this.q}&page=${this.page}&size=${this.size}` );
+    }
+
+    this.studentService.searchEmployee(this.q,this.page,this.size).subscribe({next: data=>(
+    this.paging.content = data.content,
+      this.paging.totalPages=data.totalPages,
+      this.paging.totalElements=data.totalElements,
+      this.paging.currentPage=data.number,
+      console.log(this.paging.totalPages)
+
+        )
+  }
     )
+
   }
   logout(){
     LocalStorageUlti.removeLoginInfor()

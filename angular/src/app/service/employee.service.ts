@@ -19,17 +19,17 @@ export class EmployeeService {
   deletedEmployeeUrl = environment.apiUrl+"/deleted-employee"
   searchEmployees = environment.apiUrl+"/search"
 
-  searchEmployee(param:string):Observable<any>{
-    return this.httpClient.get(`${this.searchEmployees}?param=`+param)
+  searchEmployee(param:string,page:number,size:number):Observable<any>{
+    return this.httpClient.get(`${this.searchEmployees}?param=${param}&page=${page}&size=${size}`)
   }
   addEmployee(object:any):Observable<any>{
     return this.httpClient.post(`${this.addEmployeeUrl}`,object)
   }
-  getListEmployeeWithEmployee():Observable<any>{
-    return this.httpClient.get(`${this.getEmployeeListUrl}`)
+  getListEmployeeWithEmployee(page:number,size:number):Observable<any>{
+    return this.httpClient.get(`${this.getEmployeeListUrl}?page=${page}&size=${size}`)
   }
-  getListEmployeeWithManager():Observable<any>{
-    return this.httpClient.get(`${this.getManagerListUrl}`)
+  getListEmployeeWithManager(page:number,size:number):Observable<any>{
+    return this.httpClient.get(`${this.getManagerListUrl}?page=${page}&size=${size}`)
   }
   getEmployeeByAccount():Observable<any>{
     return  this.httpClient.get(`${this.getEmployeeUrlByAccount}`)
