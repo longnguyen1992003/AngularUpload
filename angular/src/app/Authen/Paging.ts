@@ -6,4 +6,6 @@ export class Paging{
   currentPage!:number;
   content!:AccountResponse[]
 
+
+
 }

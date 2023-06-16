@@ -65,9 +65,10 @@
   </li>
 </ul>
 <nz-table #basicTable
+          [nzData]="paging.content"
+          [nzPageSize]="0"
 
-          [nzPageSize]="paging.totalPages"
-          [nzData]="paging.content">
+>
 
   <thead>
   <tr>
@@ -89,4 +90,5 @@
     <td>{{data.role}}</td>
   </tr>
   </tbody>
+
 </nz-table>

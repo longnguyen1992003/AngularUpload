@@ -5,6 +5,7 @@ import {EmployeeService} from "../../../service/employee.service";
 import {LocalStorageUlti} from "../../../ulti/local-storage-ulti";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Paging} from "../../Paging";
+import {async} from "rxjs";
 
 @Component({
   selector: 'app-student',
@@ -14,18 +15,23 @@ import {Paging} from "../../Paging";
 export class StudentComponent implements  OnInit,OnDestroy{
 
   paging:Paging = new Paging();
+  listPage !: number[]
   q:any;
   size !: number;
   page !: number;
   role=LocalStorageUlti.getRole();
+
   constructor(private studentService : EmployeeService,
               private router : Router,
               private activatedRoute:ActivatedRoute
   ) {
   }
+
   ngOnInit(): void {
 
-    this.listEmployee()
+
+     this.listEmployee()
+     console.log(this.paging.totalPages+" Gia tri trong oninit")
   }
   home(){
     if (this.role=="ROLE_EMPLOYEE"){
@@ -38,6 +44,7 @@ export class StudentComponent implements  OnInit,OnDestroy{
     this.router.navigate(['auth/employee-update'])
   }
   listEmployee() {
+
     if (LocalStorageUlti.getRole() === 'ROLE_EMPLOYEE') {
       this.router.navigate(['/auth/employees'])
     }
@@ -49,19 +56,21 @@ export class StudentComponent implements  OnInit,OnDestroy{
       this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
     }
 
-    console.log(this.size)
-    console.log(this.page)
     this.studentService.getListEmployeeWithEmployee(this.size, this.page).subscribe({
-      next: data => (
-
+      next: data => {
         this.paging.content = data.content,
-          this.paging.totalPages=data.totalPages,
-          this.paging.totalElements=data.totalElements,
-          this.paging.currentPage=data.number,
-          console.log(this.paging.totalPages)
+          this.paging.totalPages = data.totalPages,
+          this.paging.totalElements = data.totalElements,
+          this.paging.currentPage = data.number,
+          console.log(this.paging.totalPages+" Gia tri trong ham goi")
+      }
 
-      )
-    })
+    }
+
+    )
+  }
+  addListPage(loop:number){
+
   }
   searchEmployee(){
     this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));

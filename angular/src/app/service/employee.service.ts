@@ -26,7 +26,7 @@ export class EmployeeService {
     return this.httpClient.post(`${this.addEmployeeUrl}`,object)
   }
   getListEmployeeWithEmployee(page:number,size:number):Observable<any>{
-    return this.httpClient.get(`${this.getEmployeeListUrl}?page=${page}&size=${size}`)
+    return this.httpClient.get(`${this.getEmployeeListUrl}?page=${page}&size=${size}`,)
   }
   getListEmployeeWithManager(page:number,size:number):Observable<any>{
     return this.httpClient.get(`${this.getManagerListUrl}?page=${page}&size=${size}`)
