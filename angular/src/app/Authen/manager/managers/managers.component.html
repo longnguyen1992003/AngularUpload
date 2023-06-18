@@ -1,5 +1,5 @@
 Shared Data - {{ shareData }}
-<form (ngSubmit)="search()"  class="input-group">
+<form #searchForm="ngForm" (ngSubmit)="changePagesSearch(searchForm.value.search,0)"  class="input-group">
 
   <div class=" form-outline d-flex " >
     <input [(ngModel)]="q" name="search" type="search" id="form1" class="form-control" placeholder="Search" />
@@ -50,22 +50,8 @@ Shared Data - {{ shareData }}
       Profile
     </button>
   </li>
-  <li class="nav-item" role="presentation">
-    <button
-      class="nav-link"
-      id="contact-tab0"
-      data-mdb-toggle="tab"
-      data-mdb-target="#contact0"
-      type="button"
-      role="tab"
-      aria-controls="contact"
-      aria-selected="false"
-    >
-      Contact
-    </button>
-  </li>
 </ul>
-<nz-table #basicTable [nzData]="managerList">
+<nz-table #basicTable [nzData]="paging.content">
   <thead>
   <tr>
     <th>ID</th>
@@ -78,7 +64,7 @@ Shared Data - {{ shareData }}
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let data of managerList">
+  <tr *ngFor="let data of paging.content">
     <td>{{data.id}}</td>
     <td>{{data.emailId}}</td>
     <td>{{data.firstName}}</td>
@@ -89,4 +75,24 @@ Shared Data - {{ shareData }}
 
   </tr>
   </tbody>
+  <nav *ngIf="chechNull(searchForm.value.search)===false" aria-label="Page navigation example">
+    <ul class="pagination">
+      <li [ngClass]=" paging.currentPage==0? 'disabled':'' " class="page-item"><a class="page-link" (click)="previousAndNext('backward')">Previous</a></li>
+      <ul class="pagination" *ngFor="let page of [].constructor(paging.totalPages);let i = index;">
+        <li class="page-item" [ngClass]=" i==paging.currentPage? 'active':'' "><a class="page-link"   (click)="changePages(i)"  >{{i+1}} </a></li>
+      </ul>
+      <li [ngClass]=" paging.currentPage==paging.totalPages-1? 'disabled':'' "  class="page-item"><a class="page-link" (click)="previousAndNext('forward')">Next</a></li>
+    </ul>
+  </nav>
+
+  <nav *ngIf="chechNull(searchForm.value.search)===true" aria-label="Page navigation example">
+    <ul class="pagination">
+      <li [ngClass]=" paging.currentPage==0? 'disabled':'' "  class="page-item"><a class="page-link" (click)="previousAndNextSearch('backward',searchForm.value.search)">Previous</a></li>
+      <ul class="pagination" *ngFor="let page of [].constructor(paging.totalPages);let i = index;">
+        <li  class="page-item" [ngClass]=" i==paging.currentPage? 'active':'' "><a class="page-link"   (click)="changePagesSearch(searchForm.value.search,i)"  >{{i+1}} </a></li>
+
+      </ul>
+      <li [ngClass]=" paging.currentPage==paging.totalPages-1? 'disabled':'' " class="page-item"><a class="page-link" (click)="previousAndNextSearch('forward',searchForm.value.search)">Next</a></li>
+    </ul>
+  </nav>
 </nz-table>

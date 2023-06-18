@@ -7,7 +7,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzTableModule} from "ng-zorro-antd/table";
-import {NgForOf, NgIf} from "@angular/common";
+import {CommonModule, NgForOf, NgIf} from "@angular/common";
 import { ManagersComponent } from './manager/managers/managers.component';
 import {httpInterceptorProviders} from "../interceptor";
 import {en_US, NZ_I18N} from "ng-zorro-antd/i18n";
@@ -42,6 +42,7 @@ const ngZorroConfig: NzConfig = {
         NzTableModule,
         NgForOf,
         NgIf,
+        CommonModule
 
     ]
 })

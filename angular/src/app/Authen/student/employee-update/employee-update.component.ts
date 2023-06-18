@@ -14,37 +14,44 @@ import {NzMessageService} from "ng-zorro-antd/message";
   styleUrls: ['./employee-update.component.css']
 })
 export class EmployeeUpdateComponent implements OnInit {
-  user:AccountResponse = new  AccountResponse();
-  role=LocalStorageUlti.getRole();
+  user: AccountResponse = new AccountResponse();
+  role = LocalStorageUlti.getRole();
+
   constructor(private router: Router,
-              private employeeService : EmployeeService,
-              private nzMessageService:NzMessageService) {
+              private employeeService: EmployeeService,
+              private nzMessageService: NzMessageService) {
   }
+
   ngOnInit(): void {
     this.getInfor();
     console.log(this.user)
   }
-  home(){
-    if (this.role=="ROLE_EMPLOYEE"){
-    this.router.navigate(['auth/employees'])}
-    if (this.role=="ROLE_MANAGER"){
+
+  home() {
+    if (this.role == "ROLE_EMPLOYEE") {
+      this.router.navigate(['auth/employees'])
+    }
+    if (this.role == "ROLE_MANAGER") {
       this.router.navigate(['auth/managers'])
     }
   }
-  profile(){
-      this.router.navigate(['auth/employee-update'])
+
+  profile() {
+    this.router.navigate(['auth/employee-update'])
   }
-  getInfor(){
+
+  getInfor() {
     this.employeeService.getEmployeeByAccount().subscribe(user =>
-       this.user=user
+      this.user = user
     )
-}
-  updateInfor(){
+  }
+
+  updateInfor() {
     this.employeeService.updateEmployee(this.user).subscribe({
-      next: res=> {
+      next: res => {
         this.nzMessageService.success("Update success")
 
-      },error: err => {
+      }, error: err => {
         this.nzMessageService.error("Update Failed! Please try again")
       }
 
@@ -52,6 +59,7 @@ export class EmployeeUpdateComponent implements OnInit {
 
 
   }
+
   logout() {
     LocalStorageUlti.removeLoginInfor()
     this.router.navigate(['/auth/login']);
