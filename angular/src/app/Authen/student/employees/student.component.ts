@@ -6,6 +6,7 @@ import {LocalStorageUlti} from "../../../ulti/local-storage-ulti";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Paging} from "../../Paging";
 import {async, BehaviorSubject} from "rxjs";
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-student',
@@ -13,7 +14,7 @@ import {async, BehaviorSubject} from "rxjs";
   styleUrls: ['./student.component.css']
 })
 export class StudentComponent implements OnInit, OnDestroy {
-
+  user: AccountResponse = new AccountResponse();
   paging: Paging = new Paging();
   q: any;
   size !: number;
@@ -21,14 +22,16 @@ export class StudentComponent implements OnInit, OnDestroy {
   role = LocalStorageUlti.getRole();
   private currentPageSubject = new BehaviorSubject<number>(0);
   currentPage$ = this.currentPageSubject.asObservable()
+  path!:any;
   constructor(private studentService: EmployeeService,
               private router: Router,
-              private activatedRoute: ActivatedRoute
+              private activatedRoute: ActivatedRoute,
+              private location:Location
   ) {
   }
 
   ngOnInit(): void {
-
+this.path=this.location.path()
     this.listEmployee()
   }
   chechNull(check:string){
@@ -39,10 +42,14 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   home() {
-    if (this.role == "ROLE_EMPLOYEE") {
+    this.studentService.getEmployeeCurrent().subscribe({next: user=>{
+        this.user= user
+      }
+    })
+    if (this.user.role == "ROLE_EMPLOYEE") {
       this.router.navigate(['auth/employees'])
     }
-    if (this.role == "ROLE_MANAGER") {
+    if (this.user.role == "ROLE_MANAGER") {
       this.router.navigate(['auth/managers'])
     }
   }

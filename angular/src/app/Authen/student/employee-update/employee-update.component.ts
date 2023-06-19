@@ -6,6 +6,7 @@ import {EmployeeService} from "../../../service/employee.service";
 import {AccountResponse} from "../../InforRespone";
 import {success} from "ng-packagr/lib/utils/log";
 import {NzMessageService} from "ng-zorro-antd/message";
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 
 @Component({
@@ -16,22 +17,31 @@ import {NzMessageService} from "ng-zorro-antd/message";
 export class EmployeeUpdateComponent implements OnInit {
   user: AccountResponse = new AccountResponse();
   role = LocalStorageUlti.getRole();
-
+  registerArray:any={};
+  path!:any;
   constructor(private router: Router,
               private employeeService: EmployeeService,
-              private nzMessageService: NzMessageService) {
+              private nzMessageService: NzMessageService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
     this.getInfor();
-    console.log(this.user)
+
+  this.path=this.location.path()
   }
 
   home() {
-    if (this.role == "ROLE_EMPLOYEE") {
+    this.employeeService.getEmployeeCurrent().subscribe({
+      next: user => {
+        this.user=user;
+
+      }
+    })
+    if (this.user.role == "ROLE_EMPLOYEE") {
       this.router.navigate(['auth/employees'])
     }
-    if (this.role == "ROLE_MANAGER") {
+    if (this.user.role == "ROLE_MANAGER") {
       this.router.navigate(['auth/managers'])
     }
   }
@@ -41,13 +51,15 @@ export class EmployeeUpdateComponent implements OnInit {
   }
 
   getInfor() {
-    this.employeeService.getEmployeeByAccount().subscribe(user =>
-      this.user = user
-    )
+    this.employeeService.getEmployeeCurrent().subscribe({
+      next: user => {
+        this.user = user;
+      }
+    })
   }
 
   updateInfor() {
-    this.employeeService.updateEmployee(this.user).subscribe({
+    this.employeeService.updateEmployee(this.user,this.user.account).subscribe({
       next: res => {
         this.nzMessageService.success("Update success")
 

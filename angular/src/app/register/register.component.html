@@ -8,37 +8,58 @@
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Register</h2>
 
-              <form (ngSubmit)="registerEmployee()">
+              <form #registerForm="ngForm" (ngSubmit)="registerEmployee()">
 
                 <div class="form-outline mb-4">
-                  <input type="text" [(ngModel)]="user.firstName" id="firstName" name="firstName" class="form-control form-control-lg" />
+                  <input type="text" #firstName="ngModel" [(ngModel)]="user.firstName"  id="firstName" name="firstName" class="form-control form-control-lg" required />
                   <label class="form-label" for="firstName">First Name</label>
+                  <div class="text-danger"  *ngIf="(firstName.touched||registerForm.submitted)&&firstName.errors?['required']:''">
+                    First Name is Required
+                  </div>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="text" [(ngModel)]="user.lastName" id="lastName" name="lastName" class="form-control form-control-lg" />
+                  <input type="text" #lastName="ngModel" [(ngModel)]="user.lastName" id="lastName" name="lastName" class="form-control form-control-lg" required/>
                   <label class="form-label" for="lastName">Last Name</label>
+                  <div class="text-danger"  *ngIf="(lastName.touched||registerForm.submitted)&&lastName.errors?['required']:''">
+                    Last Name is Required
+                  </div>
                 </div>
 
 
                 <div class="form-outline mb-4">
-                  <input type="email" [(ngModel)]="user.emailId" id="emailId" name="emailId" class="form-control form-control-lg" />
+                  <input type="email" #emailIdName="ngModel" [(ngModel)]="user.emailId" id="emailId" name="emailId" class="form-control form-control-lg" required />
                   <label class="form-label" for="emailId"> Email</label>
+                  <div class="text-danger"  *ngIf="(emailIdName.touched||registerForm.submitted)&&emailIdName.errors?['required']:''">
+                    Email is Required
+                  </div>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="text" [(ngModel)]="user.account" id="account" name="account" class="form-control form-control-lg" />
+                  <input type="text" #account="ngModel" [(ngModel)]="user.account" id="account" name="account" class="form-control form-control-lg" required />
                   <label class="form-label" for="account">Account</label>
+                  <div class="text-danger"  *ngIf="(account.touched||registerForm.submitted)&&account.errors?['required']:''">
+                    Account is Required
+                  </div>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" [(ngModel)]="user.password"  name="password" id="password" class="form-control form-control-lg" />
+                  <input type="password" #password="ngModel"  [(ngModel)]="user.password"  name="password" id="password" class="form-control form-control-lg" required />
                   <label class="form-label" for="password">Password</label>
+                  <div class="text-danger"  *ngIf="(password.touched||registerForm.submitted)&&password.errors?['required']:''">
+                    Password is Required
+                  </div>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" name="repeatPassword" id="repeatPassword" class="form-control form-control-lg" />
+                    <input type="password"  #rePassword="ngModel"  [(ngModel)]="registerArray.repeatPassword"  name="repeatPassword" id="repeatPassword" class="form-control form-control-lg" required />
                   <label class="form-label" for="repeatPassword">Repeat your password</label>
+                  <div class="text-danger" *ngIf="(rePassword.touched||registerForm.submitted)&&rePassword.errors?['required']:''" >
+                    Re Password is Required
+                  </div>
+                  <div class="text-danger" *ngIf="(registerArray.repeatPassword!==user.password||registerForm.submitted||registerForm.submitted)" >
+                    Re-Password is not match
+                  </div>
                 </div>
 
 

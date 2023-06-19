@@ -12,13 +12,20 @@ export class EmployeeService {
   constructor(private httpClient : HttpClient) { }
   apiUrl = environment.apiUrl
   addEmployeeUrl = environment.apiUrl+"/add-employee"
-  getEmployeeUrlByAccount = environment.apiUrl+"/employee/"+LocalStorageUlti.getAccount()
   getEmployeeListUrl = environment.apiUrl+"/employees"
   getManagerListUrl = environment.apiUrl+"/managers"
-  updateEmployeeUrl = environment.apiUrl+"/update-employee/"+LocalStorageUlti.getAccount()
+  updateEmployeeUrl = environment.apiUrl+"/update-employee"
   deletedEmployeeUrl = environment.apiUrl+"/deleted-employee"
   searchEmployees = environment.apiUrl+"/search"
+  getCurrent = environment.apiUrl+"/current"
+  checkEmployeeExist = environment.apiUrl+"/check"
 
+  getEmployeeCurrent() :Observable<any>{
+    return this.httpClient.get(`${this.getCurrent}`)
+  }
+  checkExist() :Observable<any>{
+  return this.httpClient.get(`${this.checkEmployeeExist}`)
+  }
   searchEmployee(param:string,page:number,size:number):Observable<any>{
     return this.httpClient.get(`${this.searchEmployees}?param=${param}&page=${page}&size=${size}`)
   }
@@ -31,11 +38,11 @@ export class EmployeeService {
   getListEmployeeWithManager(page:number,size:number):Observable<any>{
     return this.httpClient.get(`${this.getManagerListUrl}?page=${page}&size=${size}`)
   }
-  getEmployeeByAccount():Observable<any>{
-    return  this.httpClient.get(`${this.getEmployeeUrlByAccount}`)
-  }
-  updateEmployee(object:any):Observable<any>{
-    return this.httpClient.put(`${this.updateEmployeeUrl}`,object)
+  // getEmployeeByAccount():Observable<any>{
+  //   return  this.httpClient.get(`${this.getEmployeeUrlByAccount}`)
+  // }
+  updateEmployee(object:any,account:string):Observable<any>{
+    return this.httpClient.put(`${this.updateEmployeeUrl}/${account}`,object)
   }
   deletedEmployee(account:string):Observable<any>{
     return this.httpClient.delete(`${this.deletedEmployeeUrl}/${account}`)

@@ -16,7 +16,7 @@ import {BehaviorSubject} from "rxjs";
   styleUrls: ['./managers.component.css']
 })
 export class ManagersComponent implements OnInit, OnDestroy {
-  managerList !: AccountResponse[];
+  user: AccountResponse = new AccountResponse();
   shareData !: string;
   q!: string;
   paging: Paging = new Paging();
@@ -44,10 +44,16 @@ export class ManagersComponent implements OnInit, OnDestroy {
   }
 
   home() {
-    if (this.role == "ROLE_EMPLOYEE") {
+    this.studentService.getEmployeeCurrent().subscribe({
+      next: user => {
+        this.user=user;
+
+      }
+    })
+    if (this.user.role == "ROLE_EMPLOYEE") {
       this.router.navigate(['auth/employees'])
     }
-    if (this.role == "ROLE_MANAGER") {
+    if (this.user.role == "ROLE_MANAGER") {
       this.router.navigate(['auth/managers'])
     }
   }
@@ -58,26 +64,6 @@ export class ManagersComponent implements OnInit, OnDestroy {
     this.changePagesSearch(key,direction=='forward'?Number(this.currentPageSubject.value+this.paging.currentPage+1) : Number(this.currentPageSubject.value+this.paging.currentPage-1))
   }
 
-
-
-  checkPageMin(){
-    if (this.paging.totalPages===1){
-      return false;
-    }
-    if (this.paging.currentPage===0){
-      return true
-    }
-    return  false;
-  }
-    checkPageMax(){
-      if (this.paging.totalPages===1){
-        return false;
-      }
-    if (this.paging.currentPage===this.paging.totalPages-1){
-      return true
-    }
-    return  false;
-  }
 
   changePagesSearch(key:string,page: number) {
     console.log("changePagesSearch")
