@@ -55,26 +55,38 @@
 <nz-table #basicTable [nzData]="paging.content" [nzPageSize]="0" >
   <thead>
   <tr>
+    <th>STT</th>
     <th>ID</th>
     <th>Email</th>
     <th>FirstName</th>
     <th>LastName</th>
     <th>Account</th>
+    <th>Date Of Birth</th>
+    <th>Age</th>
     <th>Role</th>
     <th>Deleted</th>
+    <th>Update</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let data of paging.content">
+  <tr *ngFor="let data of paging.content,let i= index">
+    <td>{{paging.currentPage*valueSize+1+i}}</td>
     <td>{{data.id}}</td>
     <td>{{data.emailId}}</td>
     <td>{{data.firstName}}</td>
     <td>{{data.lastName}}</td>
     <td>{{data.account}}</td>
+    <td>{{data.dateOfBirth}}</td>
+    <td>{{data.age}}</td>
     <td>{{data.role}}</td>
     <td>
       <form (ngSubmit)="deleteEmployee(data.account)">
-        <button class="btn btn-primary" *ngIf="data.role==='ROLE_EMPLOYEE'">Deleted</button>
+        <button  class="btn btn-primary" *ngIf="data.role==='ROLE_EMPLOYEE'">Deleted</button>
+      </form>
+    </td>
+    <td>
+      <form (ngSubmit)="detailEmployee(data.id)">
+        <button class="btn btn-primary" *ngIf="data.role==='ROLE_EMPLOYEE'">Update</button>
       </form>
     </td>
 
@@ -111,5 +123,11 @@
                                                                                                     (click)="previousAndNextSearch('forward',searchForm.value.search)">Next</a>
       </li>
     </ul>
+
   </nav>
 </nz-table>
+<<div class="container">
+<select  (change)="pageLength($event)" class="row form-select" aria-label="Default select example">
+  <option class="col-md-3" *ngFor="let item of sizeList" [value]="item">{{item}}/Pages</option>
+</select>
+</div>

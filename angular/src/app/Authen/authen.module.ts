@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-// import { CommonModule } from '@angular/common';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import {LoginComponent} from "../login/login.component";
 import {StudentComponent} from "./student/employees/student.component";
 import {AuthenRoutingModule} from "./authen-routing.module";
@@ -12,7 +12,10 @@ import { ManagersComponent } from './manager/managers/managers.component';
 import {httpInterceptorProviders} from "../interceptor";
 import {en_US, NZ_I18N} from "ng-zorro-antd/i18n";
 import {NZ_CONFIG, NzConfig} from "ng-zorro-antd/core/config";
-import { EmployeeUpdateComponent } from './student/employee-update/employee-update.component';
+import { Profile } from './student/profile/profile';
+import {NzDropDownModule} from "ng-zorro-antd/dropdown";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import { DetailsComponent } from './student/details/details.component';
 const ngZorroConfig: NzConfig = {
   message: {nzTop : 100}
 };
@@ -25,25 +28,28 @@ const ngZorroConfig: NzConfig = {
   LoginComponent,
     StudentComponent,
     ManagersComponent,
-    EmployeeUpdateComponent,
+    Profile,
+    DetailsComponent,
   ],
   providers: [
     httpInterceptorProviders,
     { provide: NZ_I18N, useValue: en_US },
     { provide: NZ_CONFIG, useValue: ngZorroConfig }
   ],
-    imports: [
-        // CommonModule,
-        AuthenRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NzFormModule,
-        NzInputModule,
-        NzTableModule,
-        NgForOf,
-        NgIf,
-        CommonModule
+  imports: [
+    AuthenRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzInputModule,
+    NzTableModule,
+    NgForOf,
+    NgIf,
+    CommonModule,
+    NzDatePickerModule,
+    NzDropDownModule,
+    NzSelectModule
 
-    ]
+  ]
 })
 export class AuthenModule { }

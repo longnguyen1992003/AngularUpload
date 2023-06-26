@@ -4,8 +4,9 @@ import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "../login/login.component";
 import {StudentComponent} from "./student/employees/student.component";
 import {ManagersComponent} from "./manager/managers/managers.component";
-import {EmployeeUpdateComponent} from "./student/employee-update/employee-update.component";
+import {Profile} from "./student/profile/profile";
 import {RegisterComponent} from "../register/register.component";
+import {DetailsComponent} from "./student/details/details.component";
 
 
 const routes : Routes=[
@@ -13,8 +14,10 @@ const routes : Routes=[
   {path:'login',component:LoginComponent },
   {path:'employees',component:StudentComponent},
   {path:'managers',component:ManagersComponent},
-  {path:'employee-update',component:EmployeeUpdateComponent},
-  {path:'register',component:RegisterComponent}
+  {path:'profile',component:Profile},
+  {path:'register',component:RegisterComponent},
+  {path:'details/:id',component:DetailsComponent}
+
 ]
 @NgModule({
   imports: [RouterModule.forChild(routes)],

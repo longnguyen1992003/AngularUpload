@@ -17,7 +17,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  API_IGNORE_HANDLE_ERROR = ['/check-token'];
+  API_IGNORE_HANDLE_ERROR = [''];
 
   courseId: string | undefined;
   constructor(private router: Router,
@@ -29,6 +29,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     if (isIgnore) {
       return next.handle(request);
     } else {
+
       return next.handle(request)
         .pipe(catchError((err) => this.handleError(err)));
     }

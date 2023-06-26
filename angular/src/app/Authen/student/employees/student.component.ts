@@ -6,7 +6,7 @@ import {LocalStorageUlti} from "../../../ulti/local-storage-ulti";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Paging} from "../../Paging";
 import {async, BehaviorSubject} from "rxjs";
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 
 @Component({
   selector: 'app-student',
@@ -22,28 +22,45 @@ export class StudentComponent implements OnInit, OnDestroy {
   role = LocalStorageUlti.getRole();
   private currentPageSubject = new BehaviorSubject<number>(0);
   currentPage$ = this.currentPageSubject.asObservable()
-  path!:any;
+  path!: any;
+  valueSize=5;
+  sizeList:number[]=[5,10,15,20]
+
   constructor(private studentService: EmployeeService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private location:Location
+              private location: Location
   ) {
   }
 
   ngOnInit(): void {
-this.path=this.location.path()
-    this.listEmployee()
+
+    this.studentService.getEmployeeCurrent().subscribe({
+      next: user => {
+        this.user = user
+        this.user.role = user.role
+
+      }
+    })
+    setTimeout(() => {
+      this.listEmployee(),
+        0
+    }, 5)
+
   }
-  chechNull(check:string){
-    if (check==null){
+
+
+  chechNull(check: string) {
+    if (check == null) {
       return false
     }
     return true
   }
 
   home() {
-    this.studentService.getEmployeeCurrent().subscribe({next: user=>{
-        this.user= user
+    this.studentService.getEmployeeCurrent().subscribe({
+      next: user => {
+        this.user = user
       }
     })
     if (this.user.role == "ROLE_EMPLOYEE") {
@@ -55,27 +72,28 @@ this.path=this.location.path()
   }
 
   profile() {
-    this.router.navigate(['auth/employee-update'])
+    this.router.navigate(['auth/profile'])
   }
 
-  changePagesSearch(key:string,page: number) {
-    console.log("changePagesSearch")
-    if (LocalStorageUlti.getRole() === 'ROLE_EMPLOYEE') {
+  changePagesSearch(key: string, page: number) {
+    if (this.user.role === 'ROLE_EMPLOYEE') {
       this.router.navigate(['/auth/employees'])
     }
-    this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
-    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
-    if (this.page == 0) {
-      this.page = 2
+
+    if (this.size == 0) {
+      this.size = 5
+      console.log("2")
     } else {
-      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
     }
-    this.studentService.searchEmployee(key,page, this.page).subscribe({
+    this.studentService.searchEmployee(key, page, this.valueSize).subscribe({
         next: data => {
+          console.log()
           this.paging.content = data.content,
             this.paging.totalPages = data.totalPages,
             this.paging.totalElements = data.totalElements,
             this.paging.currentPage = data.number
+          this.paging.size = data.size
 
         }
 
@@ -83,19 +101,22 @@ this.path=this.location.path()
     )
 
   }
+
   changePages(page: number) {
-    console.log("changePages")
-    if (LocalStorageUlti.getRole() === 'ROLE_EMPLOYEE') {
+
+
+    if (this.user.role === 'ROLE_EMPLOYEE') {
       this.router.navigate(['/auth/employees'])
     }
-    this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
-    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
-    if (this.page == 0) {
-      this.page = 2
+    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+    this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
+    if (this.size == 0) {
+      this.size = 2
+      console.log("changePages")
     } else {
-      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
     }
-    this.studentService.getListEmployeeWithEmployee(page, this.page).subscribe({
+    this.studentService.getListEmployeeWithEmployee(page, this.valueSize).subscribe({
         next: data => {
           this.paging.content = data.content,
             this.paging.totalPages = data.totalPages,
@@ -109,48 +130,26 @@ this.path=this.location.path()
 
   }
 
-  previousAndNext(direction?:string) {
-    this.changePages(direction=='forward'?Number(this.currentPageSubject.value+this.paging.currentPage+1) : Number(this.currentPageSubject.value+this.paging.currentPage-1))
-  }
-  previousAndNextSearch(direction:string,key:string) {
-    this.changePagesSearch(key,direction=='forward'?Number(this.currentPageSubject.value+this.paging.currentPage+1) : Number(this.currentPageSubject.value+this.paging.currentPage-1))
+  previousAndNext(direction?: string) {
+    this.changePages(direction == 'forward' ? Number(this.currentPageSubject.value + this.paging.currentPage + 1) : Number(this.currentPageSubject.value + this.paging.currentPage - 1))
   }
 
-
-
-  checkPageMin(){
-    if (this.paging.totalPages===1){
-      return false;
-    }
-    if (this.paging.currentPage===0){
-      return true
-    }
-    return  false;
+  previousAndNextSearch(direction: string, key: string) {
+    this.changePagesSearch(key, direction == 'forward' ? Number(this.currentPageSubject.value + this.paging.currentPage + 1) : Number(this.currentPageSubject.value + this.paging.currentPage - 1))
   }
-  checkPageMax(){
-    if (this.paging.totalPages===1){
-      return false;
-    }
-    if (this.paging.currentPage===this.paging.totalPages-1){
-      return true
-    }
-    return  false;
-  }
+
 
   listEmployee() {
-
-    if (LocalStorageUlti.getRole() === 'ROLE_EMPLOYEE') {
+    if (this.user.role === 'ROLE_EMPLOYEE') {
+      this.router.navigate(['/auth/employees'])
+    } else {
       this.router.navigate(['/auth/employees'])
     }
-    this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
-    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("size"));
-    if (this.page == 0) {
-      this.page = 2
-    } else {
-      this.size = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
-    }
 
-    this.studentService.getListEmployeeWithEmployee(this.size, this.page).subscribe({
+    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get("page"));
+
+
+    this.studentService.getListEmployeeWithEmployee(this.page, this.valueSize).subscribe({
         next: data => {
           this.paging.content = data.content,
             this.paging.totalPages = data.totalPages,
@@ -162,8 +161,13 @@ this.path=this.location.path()
       }
     )
   }
+  pageLength(event:Event){
 
-
+    this.valueSize=Number((<HTMLInputElement>event.target).value);
+    this.listEmployee()
+    this.changePages(0)
+    this.changePagesSearch(this.q,0)
+  }
 
   logout() {
     LocalStorageUlti.removeLoginInfor()
@@ -174,5 +178,5 @@ this.path=this.location.path()
   ngOnDestroy(): void {
   }
 
-  protected readonly isFinite = isFinite;
+
 }

@@ -6,5 +6,7 @@ export class AccountResponse{
   account!:string;
   role!:string;
   password!:string;
+  age!:number;
+  dateOfBirth!:Date;
 
 }

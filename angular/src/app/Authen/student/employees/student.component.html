@@ -1,7 +1,7 @@
 <div>
   <form #searchForm="ngForm" (ngSubmit)="changePagesSearch(searchForm.value.search,0)" class="input-group">
     <div class=" d-flex form-outline">
-      <input [(ngModel)]="q"  name="search" type="search" id="form1" class="form-control" placeholder="Search"/>
+      <input [(ngModel)]="q" name="search" type="search" id="form1" class="form-control" placeholder="Search"/>
 
       <button type="submit" class="btn btn-primary">
         <i class="fas fa-search"></i>
@@ -52,14 +52,14 @@
     </button>
   </li>
 </ul>
+
 <nz-table #basicTable
           [nzData]="paging.content"
           [nzPageSize]="0"
-
 >
-
   <thead>
   <tr>
+    <th>STT</th>
     <th>ID</th>
     <th>Email</th>
     <th>FirstName</th>
@@ -69,7 +69,8 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let data of paging.content">
+  <tr *ngFor="let data of paging.content,let i = index">
+    <td>{{paging.currentPage*valueSize+i+1}}</td>
     <td>{{data.id}}</td>
     <td>{{data.emailId}}</td>
     <td>{{data.firstName}}</td>
@@ -80,23 +81,52 @@
   </tbody>
   <nav *ngIf="chechNull(searchForm.value.search)===false" aria-label="Page navigation example">
     <ul class="pagination">
-      <li  [ngClass]=" paging.currentPage==0? 'disabled':'' " class="page-item"><a class="page-link" (click)="previousAndNext('backward')">Previous</a></li>
+      <li [ngClass]=" paging.currentPage==0? 'disabled':'' " class="page-item"><a class="page-link"
+                                                                                  (click)="previousAndNext('backward')">Previous</a>
+      </li>
       <ul class="pagination" *ngFor="let page of [].constructor(paging.totalPages);let i = index;">
-        <li  class="page-item" [ngClass]=" i==paging.currentPage? 'active':'' " ><a class="page-link"   (click)="changePages(i)"  >{{i+1}} </a></li>
+        <li class="page-item" [ngClass]=" i==paging.currentPage? 'active':'' "><a class="page-link"
+                                                                                  (click)="changePages(i)">{{i + 1}} </a>
+        </li>
 
       </ul>
-      <li [ngClass]=" paging.currentPage==paging.totalPages-1? 'disabled':'' " class="page-item"><a class="page-link" (click)="previousAndNext('forward')">Next</a></li>
+      <li [ngClass]=" paging.currentPage==paging.totalPages-1? 'disabled':'' " class="page-item"><a class="page-link"
+                                                                                                    (click)="previousAndNext('forward')">Next</a>
+      </li>
     </ul>
   </nav>
 
   <nav *ngIf="chechNull(searchForm.value.search)===true" aria-label="Page navigation example">
     <ul class="pagination">
-      <li [ngClass]=" paging.currentPage==0? 'disabled':'' " class="page-item"><a class="page-link" (click)="previousAndNextSearch('backward',searchForm.value.search)">Previous</a></li>
+      <li [ngClass]=" paging.currentPage==0? 'disabled':'' " class="page-item"><a class="page-link"
+                                                                                  (click)="previousAndNextSearch('backward',searchForm.value.search)">Previous</a>
+      </li>
       <ul class="pagination" *ngFor="let page of [].constructor(paging.totalPages);let i = index;">
-        <li class="page-item" [ngClass]=" i==paging.currentPage? 'active':'' "><a class="page-link"   (click)="changePagesSearch(searchForm.value.search,i)"  >{{i+1}} </a></li>
+        <li class="page-item" [ngClass]=" i==paging.currentPage? 'active':'' "><a class="page-link"
+                                                                                  (click)="changePagesSearch(searchForm.value.search,i)">{{i + 1}} </a>
+        </li>
       </ul>
-      <li [ngClass]=" paging.currentPage==paging.totalPages-1? 'disabled':'' " class="page-item"><a class="page-link" (click)="previousAndNextSearch('forward',searchForm.value.search)">Next</a></li>
+      <li [ngClass]=" paging.currentPage==paging.totalPages-1? 'disabled':'' " class="page-item"><a class="page-link"
+                                                                                                    (click)="previousAndNextSearch('forward',searchForm.value.search)">Next</a>
+      </li>
     </ul>
+
   </nav>
 
+  <form class="row row-cols-lg-auto g-3 align-items-center">
+    <div class="col-12">
+      <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
+      <div class="input-group">
+        <div class="input-group-text">@</div>
+        <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Username" />
+      </div>
+    </div>
+
+  </form>
 </nz-table>
+<<div class="container">
+<select  (change)="pageLength($event)" class="row form-select" aria-label="Default select example">
+  <option *ngFor="let item of sizeList" [value]="item">{{item}}/Pages</option>
+</select>
+</div>
+

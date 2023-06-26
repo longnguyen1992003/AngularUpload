@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {AccountResponse} from "../Authen/InforRespone";
 import {AuthenticationService} from "../service/authentication.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {FormGroup,FormControl,Validators,FormBuilder} from "@angular/forms";
+import {FormGroup, FormControl, Validators, FormBuilder} from "@angular/forms";
 import {Router} from "@angular/router";
 import {LocalStorageUlti} from "../ulti/local-storage-ulti";
-import {ShareDataService} from "../service/share-data.service";
+
 
 
 @Component({
@@ -15,55 +15,40 @@ import {ShareDataService} from "../service/share-data.service";
 })
 export class LoginComponent implements OnInit {
 
-  user :AccountResponse=new AccountResponse()
-  stringdata  ="fccghhccc";
+  user: AccountResponse = new AccountResponse()
+  stringdata = "fccghhccc";
   shareData !: string
   loginForm !: FormGroup;
 
 
   constructor(private authenService: AuthenticationService,
               private messeage: NzMessageService,
-              private router: Router,
-              private shareDataService : ShareDataService
-              ) {
+              private router: Router
+  ) {
   }
 
 
   ngOnInit(): void {
-    this.shareDataService.sharedData$
-      .subscribe(sharedData => this.shareData = sharedData);
-    this.updateData()
-
-    if (LocalStorageUlti.getAccessToken()){
+    if (LocalStorageUlti.getAccessToken()) {
       LocalStorageUlti.removeLoginInfor();
     }
-
-
-    this.loginForm = new FormGroup({
-      account: new FormControl('', [Validators.requiredTrue]),
-      password: new FormControl('', [Validators.requiredTrue])
-    })
-
   }
-  updateData() {
-    this.shareDataService.setData(this.stringdata);
-  }
-  backRegister(){
+
+  backRegister() {
     this.router.navigate(['/auth/register'])
   }
-  login() {
 
+  login() {
     this.authenService.login(this.user).subscribe({
       next: res => {
-        if (res.accessToken){
+        if (res.accessToken) {
           LocalStorageUlti.saveAccessToken(res.accessToken),
             LocalStorageUlti.setAccount(res.account),
             LocalStorageUlti.setRole(res.role)
-        this.messeage.success("Login success")
-          if (res.role=="ROLE_EMPLOYEE"){
+          this.messeage.success("Login success")
+          if (res.role == "ROLE_EMPLOYEE") {
             this.router.navigate([`/auth/employees`])
-          }
-          else {
+          } else {
             this.router.navigate([`/auth/managers`])
           }
         }

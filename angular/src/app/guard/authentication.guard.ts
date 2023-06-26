@@ -21,7 +21,7 @@ export class AuthenticationGuard  {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log("Hi guard")
+
     if (LocalStorageUlti.getAccessToken()) {
 
       return true;

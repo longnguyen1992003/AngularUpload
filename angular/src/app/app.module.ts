@@ -11,14 +11,15 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzFormModule} from "ng-zorro-antd/form";
-import {AuthenModule} from "./Authen/authen.module";
-import {AuthenRoutingModule} from "./Authen/authen-routing.module";
 import {Router, RouterModule} from "@angular/router";
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import {httpInterceptorProviders} from "./interceptor";
 import {NZ_CONFIG, NzConfig} from "ng-zorro-antd/core/config";
 import { RegisterComponent } from './register/register.component';
+import {NzSpaceModule} from "ng-zorro-antd/space";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 
 registerLocaleData(en);
@@ -42,7 +43,10 @@ const ngZorroConfig: NzConfig = {
     ReactiveFormsModule,
     RouterModule,
     NzMessageModule,
-    NzTableModule
+    NzTableModule,
+    NzSpaceModule,
+    NzSelectModule,
+    NzDatePickerModule
 
   ],
   providers: [

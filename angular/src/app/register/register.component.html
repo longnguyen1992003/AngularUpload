@@ -8,68 +8,131 @@
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Register</h2>
 
-              <form #registerForm="ngForm" (ngSubmit)="registerEmployee()">
+              <form [formGroup]="registerForm" (ngSubmit)="registerEmployee()">
 
                 <div class="form-outline mb-4">
-                  <input type="text" #firstName="ngModel" [(ngModel)]="user.firstName"  id="firstName" name="firstName" class="form-control form-control-lg" required />
+                  <div *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched"
+                       class="text-danger">
+                    Please enter first name.
+                  </div>
+                  <input type="text" formControlName="firstName" id="firstName" name="firstName"
+                         class="form-control form-control-lg"/>
                   <label class="form-label" for="firstName">First Name</label>
-                  <div class="text-danger"  *ngIf="(firstName.touched||registerForm.submitted)&&firstName.errors?['required']:''">
-                    First Name is Required
-                  </div>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="text" #lastName="ngModel" [(ngModel)]="user.lastName" id="lastName" name="lastName" class="form-control form-control-lg" required/>
+                  <div *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched"
+                       class="text-danger">
+                    Please enter last name.
+                  </div>
+                  <input type="text" formControlName="lastName" id="lastName" name="lastName"
+                         class="form-control form-control-lg"/>
                   <label class="form-label" for="lastName">Last Name</label>
-                  <div class="text-danger"  *ngIf="(lastName.touched||registerForm.submitted)&&lastName.errors?['required']:''">
-                    Last Name is Required
-                  </div>
                 </div>
 
 
                 <div class="form-outline mb-4">
-                  <input type="email" #emailIdName="ngModel" [(ngModel)]="user.emailId" id="emailId" name="emailId" class="form-control form-control-lg" required />
+                  <div *ngIf="registerForm.controls['emailId'].hasError('required') && registerForm.controls['emailId'].touched"
+                       class="text-danger">
+                    Please enter a email.
+                  </div>
+                  <div *ngIf="registerForm.controls['emailId'].hasError('pattern') "
+                       class="text-danger">
+                    Please input email with format : <br> (elland.pansensoy@yahoo.com,<br>elland@pixelplusone.com).
+                  </div>
+                  <input type="email" formControlName="emailId" id="emailId" name="emailId"
+                         class="form-control form-control-lg"/>
                   <label class="form-label" for="emailId"> Email</label>
-                  <div class="text-danger"  *ngIf="(emailIdName.touched||registerForm.submitted)&&emailIdName.errors?['required']:''">
-                    Email is Required
-                  </div>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="text" #account="ngModel" [(ngModel)]="user.account" id="account" name="account" class="form-control form-control-lg" required />
+                  <div *ngIf="registerForm.controls['account'].hasError('required') && registerForm.controls['account'].touched"
+                       class="text-danger">
+                    Please enter a account.
+                  </div>
+                  <div *ngIf="registerForm.controls['account'].hasError('minlength') && registerForm.controls['account'].touched"
+                       class="text-danger">
+                    Please enter a account more than 10 character.
+                  </div>
+                  <input type="text" formControlName="account" id="account" name="account"
+                         class="form-control form-control-lg"/>
                   <label class="form-label" for="account">Account</label>
-                  <div class="text-danger"  *ngIf="(account.touched||registerForm.submitted)&&account.errors?['required']:''">
-                    Account is Required
-                  </div>
                 </div>
 
                 <div class="form-outline mb-4">
-                  <input type="password" #password="ngModel"  [(ngModel)]="user.password"  name="password" id="password" class="form-control form-control-lg" required />
+                  <div class="text-danger"
+                       *ngIf="registerForm?.get('dateOfBirth')?.hasError('date')"
+                  >
+                    <span class="error-item">Date must be greater than current date!</span>
+                  </div>
+                  <div *ngIf="registerForm.controls['dateOfBirth'].hasError('required') && registerForm.controls['dateOfBirth'].touched"
+                       class="text-danger">
+                    Please enter date of birth.
+                  </div>
+                  <div *ngIf="registerForm.controls['dateOfBirth'].hasError('pattern') && registerForm.controls['dateOfBirth'].touched"
+                       class="text-danger">
+                    Please format.
+                  </div>
+                  <nz-date-picker  formControlName="dateOfBirth" class=" form-control form-control-lg" id="dateOfBirth"
+                                  name="dateOfBirth"></nz-date-picker>
+                  <label class=" d-flex  form-label" for="dateOfBirth">Date Of Birth</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <div *ngIf="registerForm.controls['age'].hasError('required') && registerForm.controls['age'].touched"
+                       class="text-danger">
+                    Please enter age.
+                  </div>
+                  <div *ngIf="registerForm.controls['age'].hasError('min') && registerForm.controls['age'].touched"
+                       class="text-danger">
+                    Please enter age more than 0.
+                  </div>
+                  <div *ngIf="registerForm.controls['age'].hasError('max') && registerForm.controls['age'].touched"
+                       class="text-danger">
+                    Please enter age less than 100.
+                  </div>
+                  <input type="number" formControlName="age" id="age" name="age" class="form-control form-control-lg"/>
+                  <label class="form-label" for="age">Age</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <div *ngIf="registerForm.controls['password'].hasError('required') && registerForm.controls['password'].touched"
+                       class="text-danger">
+                    Please enter a password.
+                  </div>
+
+                  <div *ngIf="registerForm.controls['password'].hasError('minlength') && registerForm.controls['password'].touched"
+                       class="text-danger">
+                    Please enter password more than 8 character.
+                  </div>
+                  <input type="password" formControlName="password" id="password" name="password" class="form-control form-control-lg"/>
                   <label class="form-label" for="password">Password</label>
-                  <div class="text-danger"  *ngIf="(password.touched||registerForm.submitted)&&password.errors?['required']:''">
-                    Password is Required
-                  </div>
                 </div>
 
-                <div class="form-outline mb-4">
-                    <input type="password"  #rePassword="ngModel"  [(ngModel)]="registerArray.repeatPassword"  name="repeatPassword" id="repeatPassword" class="form-control form-control-lg" required />
-                  <label class="form-label" for="repeatPassword">Repeat your password</label>
-                  <div class="text-danger" *ngIf="(rePassword.touched||registerForm.submitted)&&rePassword.errors?['required']:''" >
-                    Re Password is Required
-                  </div>
-                  <div class="text-danger" *ngIf="(registerArray.repeatPassword!==user.password||registerForm.submitted||registerForm.submitted)" >
-                    Re-Password is not match
-                  </div>
+                  <div class="form-outline mb-4">
+                    <input type="password" formControlName="repeatPassword" id="repeatPassword" name="repeatPassword" class="form-control form-control-lg"/>
+                  <label class="form-label" for="repeatPassword">Repeat Password</label>
+                    <div *ngIf="registerForm.controls['repeatPassword'].hasError('required') && registerForm.controls['repeatPassword'].touched"
+                         class="text-danger">
+                      Please enter confirm password.
+                    </div>
+                    <div *ngIf="passwordMatchError"
+                         class="text-danger">
+                      Please enter a match password.
+                    </div>
+
                 </div>
 
 
                 <div class="d-flex justify-content-center">
-                  <button type="submit"
-                          class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                  <button type="submit" [disabled]="registerForm.invalid"
+                          class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register
+                  </button>
                 </div>
 
                 <p class="text-center text-muted mt-5 mb-0">Have already an account? <a (click)="backLogin()"
-                                                                                        class="fw-bold text-body"><u>Login here</u></a></p>
+                                                                                        class="fw-bold text-body"><u>Login
+                  here</u></a></p>
 
               </form>
 
