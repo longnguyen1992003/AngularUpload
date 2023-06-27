@@ -11,9 +11,13 @@
               <form [formGroup]="registerForm" (ngSubmit)="registerEmployee()">
 
                 <div class="form-outline mb-4">
-                  <div *ngIf="registerForm.controls['firstName'].invalid && registerForm.controls['firstName'].touched"
+                  <div *ngIf="registerForm.controls['firstName'].hasError('required') && registerForm.controls['firstName'].touched"
                        class="text-danger">
                     Please enter first name.
+                  </div>
+                  <div *ngIf="registerForm.controls['firstName'].hasError('pattern') "
+                       class="text-danger">
+                    Please enter first name cannot included number.
                   </div>
                   <input type="text" formControlName="firstName" id="firstName" name="firstName"
                          class="form-control form-control-lg"/>
@@ -21,9 +25,13 @@
                 </div>
 
                 <div class="form-outline mb-4">
-                  <div *ngIf="registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched"
+                  <div *ngIf="registerForm.controls['lastName'].hasError('requied') && registerForm.controls['lastName'].touched"
                        class="text-danger">
                     Please enter last name.
+                  </div>
+                  <div *ngIf="registerForm.controls['lastName'].hasError('pattern') "
+                       class="text-danger">
+                    Please enter last name cannot included number.
                   </div>
                   <input type="text" formControlName="lastName" id="lastName" name="lastName"
                          class="form-control form-control-lg"/>
@@ -69,10 +77,7 @@
                        class="text-danger">
                     Please enter date of birth.
                   </div>
-                  <div *ngIf="registerForm.controls['dateOfBirth'].hasError('pattern') && registerForm.controls['dateOfBirth'].touched"
-                       class="text-danger">
-                    Please format.
-                  </div>
+
                   <nz-date-picker  formControlName="dateOfBirth" class=" form-control form-control-lg" id="dateOfBirth"
                                   name="dateOfBirth"></nz-date-picker>
                   <label class=" d-flex  form-label" for="dateOfBirth">Date Of Birth</label>

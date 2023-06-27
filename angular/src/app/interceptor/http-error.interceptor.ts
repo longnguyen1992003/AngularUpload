@@ -17,7 +17,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  API_IGNORE_HANDLE_ERROR = [''];
+  API_IGNORE_HANDLE_ERROR = ['/login','/register'];
 
   courseId: string | undefined;
   constructor(private router: Router,

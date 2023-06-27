@@ -29,8 +29,8 @@ export class DetailsComponent implements OnInit{
   ngOnInit(): void {
     this.idEmployee=Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.updateForm = new FormGroup({
-      firstName: new FormControl('',),
-      lastName : new FormControl('',),
+      firstName: new FormControl('',Validators.pattern("^[a-zA-Z ]*$")),
+      lastName : new FormControl('',Validators.pattern("^[a-zA-Z ]*$")),
       emailId : new FormControl('',[Validators.pattern("(\\W|^)[\\w.+\\-]*@gmail\\.com(\\W|$)")]),
       account : new FormControl('',[Validators.minLength(10)]),
       password : new FormControl('',[Validators.minLength(8)]),

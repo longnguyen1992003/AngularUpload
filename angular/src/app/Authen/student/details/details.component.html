@@ -56,7 +56,11 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input type="text" [placeholder]="user.firstName==(null||undefined)?'':user.firstName"  formControlName="firstName" name="firstName" id="firstName" class="form-control" required/>
+                      <div *ngIf="updateForm.controls['firstName'].hasError('pattern') "
+                           class="text-danger">
+                        Please enter first name cannot included number.
+                      </div>
+                      <input type="text" [placeholder]="user.firstName==(null||undefined)?'':user.firstName"  formControlName="firstName" name="firstName" id="firstName" class="form-control" />
                       <label class="form-label" for="firstName">First Name</label>
                     </div>
                   </div>
@@ -64,7 +68,11 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
-                      <input [placeholder]="user.lastName==(null||undefined)?'':user.lastName" formControlName="lastName" name="lastName" type="text"  id="lastName" class="form-control" required />
+                      <div *ngIf="updateForm.controls['lastName'].hasError('pattern') "
+                           class="text-danger">
+                        Please enter first name cannot included number.
+                      </div>
+                      <input [placeholder]="user.lastName==(null||undefined)?'':user.lastName" formControlName="lastName" name="lastName" type="text"  id="lastName" class="form-control"  />
                       <label class="form-label" for="lastName">Last Name</label>
                     </div>
                   </div>
@@ -76,7 +84,7 @@
                            class="text-danger">
                         Please input email with format : <br> (elland.pansensoy@yahoo.com,<br>elland@pixelplusone.com).
                       </div>
-                      <input  [placeholder]="user.lastName==(null||undefined)?'':user.lastName"  formControlName="emailId" name="emailId" type="email"  id="email" class="form-control" required />
+                      <input  [placeholder]="user.emailId==(null||undefined)?'':user.emailId"  formControlName="emailId" name="emailId" type="email"  id="email" class="form-control"  />
                       <label class="form-label" for="email">Your Email</label>
                     </div>
                   </div>
@@ -125,14 +133,14 @@
                            class="text-danger">
                         Please enter age less than 100.
                       </div>
-                      <input [placeholder]="user.age==(null||undefined)?'':user.age" formControlName="age" name="age" type="number"  id="age" class="form-control" required />
+                      <input [placeholder]="user.age==(null||undefined)?'':user.age" formControlName="age" name="age" type="number"  id="age" class="form-control"  />
                       <label class="form-label" for="age">Age</label>
                     </div>
                   </div>
 
 
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button [disabled]="updateForm.invalid" type="submit" class="btn btn-primary btn-lg">Update</button>
+                    <button  type="submit" class="btn btn-primary btn-lg">Update</button>
                   </div>
 
                 </form>

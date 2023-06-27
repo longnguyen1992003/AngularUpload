@@ -13,7 +13,7 @@ const routes : Routes=[
   {path:'',redirectTo:'auth/login',pathMatch:"full"},
   {path:'login',redirectTo:'/auth/login'},
   {path:'register',redirectTo:'/auth/register'},
-  {path:'auth',loadChildren: () => import('./Authen/authen.module').then(m => m.AuthenModule)   },
+  {path:'auth',loadChildren: () => import('./Authen/authen.module').then(m => m.AuthenModule)   }
 
 ]
 

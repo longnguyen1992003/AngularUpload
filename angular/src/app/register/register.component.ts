@@ -35,8 +35,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
       this.registerForm = new FormGroup({
-        firstName: new FormControl('',Validators.required),
-        lastName : new FormControl('',Validators.required),
+        firstName: new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z ]*$")]),
+        lastName : new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z ]*$")]),
         emailId : new FormControl('',[Validators.required,Validators.pattern("(\\W|^)[\\w.+\\-]*@gmail\\.com(\\W|$)")]),
         account : new FormControl('',[Validators.required,Validators.minLength(10)]),
         password : new FormControl('',[Validators.required,Validators.minLength(8)]),
@@ -54,14 +54,6 @@ export class RegisterComponent implements OnInit {
     }else
     if (new Date(control.value).valueOf()> new Date().valueOf()) {
       return {date: true, error: true};
-    }
-    return {};
-  };
-  confirmationValidator = (control: UntypedFormControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { required: true, error: true };
-    } else if (control.value !== this.registerForm.value.password) {
-      return { rePassword: true, error: true };
     }
     return {};
   };
